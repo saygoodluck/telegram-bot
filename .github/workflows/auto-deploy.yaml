@@ -25,8 +25,25 @@ jobs:
             export TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}
             export BACKEND_URL=${{ secrets.BACKEND_URL }}
             export FRONTEND_URL=${{ secrets.FRONTEND_URL }}
+            
+            echo "Stopping any running bot instance..."
+            pkill -f "node bot.js" || true
+            
             rm -rf telegram-bot
             git clone https://github.com/saygoodluck/telegram-bot.git
             cd /root/telegram-bot
             npm i
-            node bot.js
+            
+            # Запуск бота в фоновом режиме
+            nohup node bot.js > bot.log 2>&1 &
+
+            # Ждем несколько секунд, чтобы бот успел запуститься
+            sleep 5
+
+            # Проверяем, запущен ли бот
+            if pgrep -f "node bot.js" > /dev/null; then
+              echo "Bot is running."
+            else
+              echo "Bot failed to start."
+              exit 1
+            fi
