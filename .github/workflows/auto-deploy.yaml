@@ -19,6 +19,9 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
           script: |
+            export TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}
+            export BACKEND_URL=${{ secrets.BACKEND_URL }}
+            export FRONTEND_URL=${{ secrets.FRONTEND_URL }}
             rm -rf telegram-bot
             git clone https://github.com/saygoodluck/telegram-bot.git
             cd /root/telegram-bot
