@@ -13,22 +13,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up SSH
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build/  # Adjust the path to your build output directory if different
+
+      - name: Add SSH key
         uses: webfactory/ssh-agent@v0.8.1
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Deploy application
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}'
-            if [ ! -d "/root/telegram-bot" ]; then
-              mkdir -p /root/telegram-bot
-              git clone https://github.com/saygoodluck/telegram-bot.git /root/telegram-bot
-            else
-              cd /root/telegram-bot
-              git pull origin main
-            fi
-            cd /root/telegram-bot
-            npm install
-            pm2 restart all
-          '
+      - name: Upload to remote server
+        run: scp -r build/ root@${{ secrets.SSH_HOST }}:/root/
+        env:
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_HOST }}
