@@ -31,12 +31,12 @@ jobs:
             
             rm -rf telegram-bot
             git clone https://github.com/saygoodluck/telegram-bot.git
-            cd /root/telegram-bot
+            cd telegram-bot
             npm i
             
-            # Запуск бота в фоновом режиме
-            nohup node bot.js > bot.log 2>&1 &
-
+            # Запуск бота в фоновом режиме с полным отсоединением
+            nohup setsid node bot.js > bot.log 2>&1 &
+            
             # Ждем несколько секунд, чтобы бот успел запуститься
             sleep 5
 
