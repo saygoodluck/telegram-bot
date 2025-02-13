@@ -39,8 +39,8 @@ bot.action('auth', async (ctx) => {
 
     // Если backend вернул успех – уведомляем пользователя
     if (response.data.success) {
-      const redirectUrl = `${process.env.FRONTEND_URL}?authToken=${response.data.token}&username=${response.data.user.username}`;
-      await ctx.answerCbQuery(); // Закрываем уведомление callback
+      const redirectUrl = `${process.env.FRONTEND_URL}?authToken=${response.data.token}`;
+      await ctx.answerCbQuery();
       await ctx.reply('Авторизация прошла успешно!', {
         reply_markup: {
           inline_keyboard: [
