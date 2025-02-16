@@ -11,19 +11,18 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: appleboy/ssh-action@master
         with:
-            host: ${{ secrets.SERVER_URL }}
-            username: ${{ secrets.SERVER_USER }}
-            password: ${{ secrets.SERVER_PASSWORD }}
-            port: 22
-            script: |
-              rm -rf /root/telegram-bot
-              cd /root
-              git clone --depth=1 -b master https://github.com/saygoodluck/telegram-bot.git
+          host: ${{ secrets.SERVER_URL }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: 22
+          script: |
+            rm -rf /root/telegram-bot
+            cd /root
+            git clone --depth=1 -b master https://github.com/saygoodluck/telegram-bot.git
 
-              export NVM_DIR=~/.nvm
-              source ~/.nvm/nvm.sh
-              npm i
-              node bot.js
-              
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            npm i
+            node bot.js
