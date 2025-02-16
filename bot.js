@@ -9,8 +9,7 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 bot.start((ctx) => {
   const welcomeMessage = `
 Добро пожаловать, ${ctx.from.first_name}!
-Чтобы авторизоваться, нажмите кнопку ниже.
-  `;
+Чтобы авторизоваться, нажмите кнопку ниже.`;
   // Отправляем сообщение с inline‑кнопкой для авторизации
   ctx.reply(welcomeMessage, {
     reply_markup: {
